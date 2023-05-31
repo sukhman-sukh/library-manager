@@ -1,0 +1,32 @@
+body{
+    margin: 0%;
+    background-image: url("../assets/dack.jpg");
+    background-repeat: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8%;
+}
+
+
+.label{
+    font-size: xx-large;
+    font-weight: 300;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
+}
+.inputField {
+    margin:5%;
+    width: 120%;
+    height: 50%;
+    padding: 5%;
+    border: none;
+    border-bottom: 0.1rem solid  black;
+    font-size:x-large;
+    /* background-color:skyblue; */
+
+}
+input:focus {
+    background-color: black;
+    color: white;
+  }

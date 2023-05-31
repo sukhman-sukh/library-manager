@@ -1,0 +1,65 @@
+body{
+    margin: 0%;
+    background-image: url("../assets/dack.jpg");
+    background-repeat: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10%;
+}
+
+
+.label{
+    font-size: xx-large;
+    font-weight: 300;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
+}
+.inputField {
+    margin:5%;
+    width: 120%;
+    height: 400%;
+    padding: 5%;
+    border: none;
+    border-bottom: 0.1rem solid  black;
+    font-size:x-large;
+    /* background-color:skyblue; */
+
+}
+input:focus {
+    background-color: black;
+    color: white;
+  }
+
+  button {
+    position: absolute;
+    margin-top: 14%;
+    margin-left: 5% ;
+    display: inline-block;
+    padding: 1% 2%;
+    font-size: 180%;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 25%;
+    box-shadow: 0 9px #999;
+  }
+  
+  button:hover {background-color: #3e8e41}
+  
+  button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+  a{
+    font-size: 180%;
+    position: relative;
+    margin-top: 10%;
+    margin-left: 5%;
+  }
