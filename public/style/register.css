@@ -30,3 +30,38 @@ input:focus {
     background-color: black;
     color: white;
   }
+  #btnsubmit {
+    position: absolute;
+    /* margin-top: 5%; */
+    margin-left: 5% ;
+    display: inline-block;
+    padding: 1% 2%;
+    font-size: 180%;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 25%;
+    box-shadow: 0 9px #999;
+  }
+  
+  #btnsubmit:hover {background-color: #3e8e41;
+    cursor : not-allowed;}
+  
+  #btnsubmit:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+  #invalid{
+    display:none
+  }
+
+  #mismatch{
+    display:none
+  }
+ 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/register.css">
+    <title>Register</title>
+</head>
+<body>
+    
+    <div>
+
+        <form  id="registerForm">
+
+            <div title="No Special Char in UserName ">
+            <label class="label" for="username">UserName : </label><br>
+            <input type="text" class="inputField"  id="username" name="username" placeholder="Enter Name" required><br><br>
+            </div>
+
+            <div title=" Atleast One special character(@ , _ , $) with alphanumeric password ">
+            <label class="label" for="password">Password :</label><br>
+            <input type="password" class="inputField" id="password" name="password" placeholder="Enter Password" required><br><br>
+            </div>
+
+            <div >
+            <label class="label" for="reEnterPass">Re-Enter Password : </label><br>
+            <input type="password" class="inputField" id="reEnterPass" name="reEnterPass" placeholder="Re-enter Password" required><br>
+            </div>
+            <input type="checkbox" name="adminAccess" id="adminAccess" value="adminAccess" > 
+            <label for="adminAccess">Ask Admin For Admin Access</label>
+
+            <h2 id ="invalid"> *Not Upto Criteria</h2>
+            <h2 id="mismatch" > *Password Not Matching</h2>
+
+            <!-- <input type="submit" value="Submit" id ="btnsubmit" onmouseover="check()" > -->
+        </form>
+        <button  id ="btnsubmit" onmouseover="check()" >Submit</button>
+
+    </div>
+
+</body>
+
+<script src="../script/register.js"></script>
+</html>

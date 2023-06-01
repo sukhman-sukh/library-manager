@@ -8,14 +8,15 @@
     <title>Login</title>
 </head>
 <body>
-    <form>
+    <form action="/login" method="post">
         <label class="label" for="username">UserName : </label><br>
-        <input type="text" class="inputField" id="username" name="username"><br><br>
+        <input type="text" class="inputField" id="username" name="username" required autofocus><br><br>
         <label class="label" for="password">Password :</label><br>
-        <input type="password" class="inputField" id="password" name="password">
+        <input type="password" class="inputField" id="password" name="password" required autofocus> 
+        <input type="submit" value="Submit" id="submit">
       </form>
-      <button>Login</button>
-      <a href="register.html"> Create A New One </a>
+      <!-- <button>Login</button> -->
+      <a href="/register"> Create A New One </a>
 </body>
 <script src="../script/login.js"></script>
 </html>

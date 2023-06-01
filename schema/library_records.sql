@@ -33,6 +33,16 @@ CREATE TABLE `requests`(
     FOREIGN KEY (userId) REFERENCES users (id),
     FOREIGN KEY (bookId) REFERENCES books (bookId)
 )
+
+
+CREATE TABLE `adminReq` (
+    `reqId` int NOT NULL AUTO_INCREMENT,
+    `date` date DEFAULT NULL,
+    `userId` int NOT NULL,
+    `status` int NOT NULL DEFAULT '0',
+    PRIMARY KEY (`reqId`),
+    FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
+);
 --  NULL = -1
 -- Request (Check-out) = 0
 -- Request (Check-In) = 1
