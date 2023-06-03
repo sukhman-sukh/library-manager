@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="../style/addBook.css">
+    <title>Add Books</title>
+</head>
+<body>
+    <h1 class="heading">Add Book</h1>
+    <form action="/admin/add" method="post">
+        <label class="label" for="bookname">BookName : </label><br>
+        <input type="text" class="inputField" id="bookname" name="bookname" required autofocus><br><br>
+        <label class="label" for="Author">Author :</label><br>
+        <input type="text" class="inputField" id="Author" name="Author" required autofocus> <br> <br> 
+        <label class="label" for="Copies">Copies :</label><br>
+        <input type="text" class="inputField" id="Copies" name="Copies" required autofocus> <br> <br> 
+        <input type="submit" value="+ Add" id="submit">
+      </form>
+</body>
+
+<!-- <script src="../script/ad"></script> -->
+</html>

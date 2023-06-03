@@ -1,0 +1,75 @@
+body{
+    margin: 0%;
+    background-image: url("../assets/dack.jpg");
+    background-repeat: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2%;
+}
+
+
+.container1{
+    margin-top: 1%;
+}
+
+.container2{
+
+}
+#list2{
+    margin-top: 3%;
+}
+
+.list_container{
+    padding-top: 1%;
+    padding-left: 6%;
+    height: 25vh;
+    width: 30vw;
+    
+    overflow-x: hidden; 
+    overflow-y: auto;
+    background-color: skyblue;
+    
+    box-shadow: 5px 10px #888888;
+}
+.statusbtn{
+    position: relative;
+    margin-left: 30%;
+    margin-top: 1%;
+    height: 2vh;
+    width: 7vw;
+}
+
+.statusbtn {
+    /* position: absolute; */
+    /* margin-top: 2%;
+    margin-left: 5% ; */
+    display: inline-block;
+    padding: 0.1% 0.2%;
+    font-size: 80%;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    /* color: #fff; */
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 25%;
+    box-shadow: 0 9px #999;
+  }
+  
+  .statusbtn:hover {background-color: #3e8e41}
+  
+  .statusbtn:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+  #logout{
+    background-color: black;
+    color: white;
+    position: absolute;
+    font-size: x-large;
+    margin-left: 90%;
+  }

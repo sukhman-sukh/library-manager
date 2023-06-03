@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/client.css" type="text/css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello ! <%= username %></h1>
+    <h2>List of books</h2>
+    <form>
+        <input type="text" id="searchBox" name="searchBox"  autofocus><br><br>
+    </form>
+    <button id = "searchbtn" >Search</button>
+
+    <div class="list_container container1">
+        
+        
+
+        <table class="list_table">
+            <thead>
+                <tr>
+                    <th > "Book Id  "        </th> 
+                    <th></th> <th></th>
+                    <th > "Book Name  "      </th> 
+                    <th></th><th></th>
+                    <th > "Author  "  </th>
+                    <th></th><th></th>  
+                    <th > "Copies  " </th>
+                </tr>
+            </thead>
+
+            <tbody >
+                <% data.forEach(function(entry) { %>
+                    <% if(entry.copies != 0) { %>
+                  <tr>
+                    <td>  <%= entry.bookId %></td>
+                    <td></td>
+                    <td></td>
+                    <td><%= entry.bookName %></td>
+                    <td></td>
+                    <td></td>
+                    <td><%= entry.author %></td>
+                    <td></td>
+                    <td></td>
+                    <td><%= entry.copies %></td>
+                    <td><button class="statusbtn" style="background-color: limegreen;" > Check-Out </button></td>
+                    <% } %>
+                </tr>
+                
+                <% }); %>
+              </tbody>
+        </table>
+
+    </div>
+
+    <h2 id ="list2">List Of CheckedOut Books</h2>
+
+    <div class="list_container container2">
+        
+        <table class="list_table">
+            <thead>
+                <tr>
+                    <th > "Request Id  "        </th> 
+                    <th></th> <th></th>
+                    <th > "Date  "      </th> 
+                    <th></th><th></th>
+                    <th > "Book Id  "  </th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody >
+                <% reqdata.forEach(function(reqEntry) { %>
+                    
+                  <tr>
+                    <td>  <%= reqEntry.reqId %></td>
+                    <td></td>
+                    <td></td>
+                    <td><%= reqEntry.date %></td>
+                    <td></td>
+                    <td></td>
+                    <td><%= reqEntry.bookId %></td>
+                    <td></td>
+                    
+                    <td><button class="statusbtn" <% if(reqEntry.status == "Requested Check-In") { %>style="background-color: white;"<% } %> <% if(reqEntry.status == "Check-In") { %> style="background-color:rgb(255, 53, 53)"<% } %>     > <%= reqEntry.status %> </button></td>
+                    
+                </tr>
+                
+                <% }); %>
+              </tbody>
+        </table>
+
+    </div>
+    <button id="logout"> Log-Out</button>
+</body>
+<script src="../script/client.js"></script>
+</html>

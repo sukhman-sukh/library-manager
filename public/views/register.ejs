@@ -10,7 +10,9 @@
 <body>
     
     <div>
-
+        <% if(data == "Username is not unique") {%>
+            <h2 style="color: red;" >*Username is not unique </h2>
+            <%}%>
         <form  id="registerForm">
 
             <div title="No Special Char in UserName ">

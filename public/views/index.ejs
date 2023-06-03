@@ -8,6 +8,9 @@
     <title>Login</title>
 </head>
 <body>
+    <% if(data == "Incorrect ID or Password") {%>
+    <h2 style="color: red;" >*Incorrect ID or Password </h2>
+    <%}%>
     <form action="/login" method="post">
         <label class="label" for="username">UserName : </label><br>
         <input type="text" class="inputField" id="username" name="username" required autofocus><br><br>
