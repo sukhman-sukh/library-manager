@@ -14,7 +14,8 @@
         <input type="text" id="searchBox" name="searchBox"  autofocus><br><br>
     </form>
     <button id = "searchbtn" >Search</button> -->
-
+    <button class="statusbtn" id="reqcheckout" onclick="checkOut()" style="background-color: limegreen;"  > Check-Out </button>
+    
     <div class="list_container container1">
         
         
@@ -46,7 +47,7 @@
                     <td></td>
                     <td>||</td>
                     <td><%= entry.copies %></td>
-                    <td><button class="statusbtn" style="background-color: limegreen;" > Check-Out </button></td>
+                    <!-- <td><button class="statusbtn" style="background-color: limegreen;" > Check-Out </button></td> -->
                     <% } %>
                 </tr>
                 
@@ -85,7 +86,7 @@
                     <td><%= reqEntry.bookId %></td>
                     <td></td>
                     
-                    <td><button class="statusbtn" <% if(reqEntry.status == "Requested Check-In") { %>style="background-color: white;"<% } %> <% if(reqEntry.status == "Check-In") { %> style="background-color:rgb(255, 53, 53)"<% } %>     > <%= reqEntry.status %> </button></td>
+                    <td><button class="statusbtn"  id="reqbtn" <% var Status="" ; var link=""; if(reqEntry.status == 1 ) {  %>style="background-color: white; " <% Status = "Requested Check-In"; } %> <%  if(reqEntry.status == -1 ) {  %>style="background-color: white; " <% Status = "Requested Check-Out"; } %> <% if(reqEntry.status == 0 ) { link ="/checkin"%> <%  Status ="Request Checkin";} %>  onclick="window.location.href = `<%= link %>`;"   > <%= Status%> </button></td>
                     
                 </tr>
                 

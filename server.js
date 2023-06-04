@@ -106,10 +106,16 @@ async function authenticate(res, username, password, row) {
 // SELECT cookie.sessionId, cookie.userId, users.admin FROM cookie, users WHERE sessionId = 'd7d11b7ec9c5332262f4f9f00dce039be87824c3' AND users.id = 10;
 //Creating Middleware
 function validateCookies(req, res, next) {
+    // console.log(req);
     req.adminAuth = 0;
-
-    const cookieId = req.headers.cookie.slice(10);
-    console.log(cookieId)
+    try
+    {
+        var cookieId = req.headers.cookie.slice(10);
+    }
+    catch(err){
+        res.redirect("/");
+    }    // console.log(cookieId)
+    
     if (req.headers.cookie.includes("sessionID")) {
         db.query(
             `SELECT cookie.sessionId, cookie.userId, users.admin , users.userName FROM cookie, users WHERE sessionId = ${db.escape(cookieId)} AND users.id = cookie.userId;`,
@@ -120,7 +126,7 @@ function validateCookies(req, res, next) {
                     throw err;
                 }
                 else {
-                    console.log(result[0]);
+                    // console.log(result[0]);
                     console.log(cookieId)
                     if (result[0].admin === 1) {
                         req.adminAuth = 1;
@@ -159,7 +165,6 @@ function isAdmin(req, res, next) {
 
 app.get("/logout", validateCookies, (req, res) => {
     req.headers.cookie = null
-    console.log("inside logout")
     db.query(
         `DELETE FROM cookie WHERE userId = ${db.escape(req.userID)};`,
         (err, result, field) => {
@@ -167,11 +172,7 @@ app.get("/logout", validateCookies, (req, res) => {
                 throw err
             }
             else {
-                console.log("here");
                 res.redirect("/login");
-                // res.render("views/index", { data: "heh" });
-                console.log("==========================");
-                // res.send("User Signed out successfully!");
             }
         }
     )
@@ -186,20 +187,45 @@ app.get("/login", function (req, res) {
 
 app.get("/", function (req, res) {
 
-    console.log(req.headers.cookie);
+    // console.log(req.headers.cookie);
     if (req.headers.cookie == undefined) {
         // res.render("views/index", { data: "." });
         res.redirect("/login")
     }
     else {
-        validateCookies();
-        if (req.adminAuth == 1) {
-            // res.render("views/index", { data: "." });
-            res.redirect("/admin");
-        }
-        else {
-            res.redirect("/client")
-        }
+        req.adminAuth = 0;
+
+    const cookieId = req.headers.cookie.slice(10);
+    // console.log(cookieId)
+    if (req.headers.cookie.includes("sessionID")) {
+        db.query(
+            `SELECT cookie.sessionId, cookie.userId, users.admin , users.userName FROM cookie, users WHERE sessionId = ${db.escape(cookieId)} AND users.id = cookie.userId;`,
+            (err, result) => {
+
+                console.table(result);
+                if (err) {
+                    throw err;
+                }
+                else {
+                    console.log(result[0]);
+                    // console.log(cookieId)
+                    if (result[0].admin == 1) {
+                        console.log("I am ADMIN")
+                        req.adminAuth = 1;
+                        res.redirect("/admin");
+                    }
+                    else {
+                        req.adminAuth = 0;
+                        res.redirect("/client");
+                    }
+                }
+            }
+        )
+    }
+    else {
+        res.status(403).send({ 'msg': 'Not Authenticated' });
+    }
+      
 
     }
 
@@ -211,7 +237,7 @@ app.get("/register", (req, res) => {
     // res.sendFile(__dirname + "/public/screens/register.html");
 });
 
-app.get("/admin/checkin", (req, res) => {
+app.get("/admin/checkin",isAdmin, (req, res) => {
 
     res.render("views/checkin");
     // res.sendFile(__dirname + "/public/screens/register.html");
@@ -224,12 +250,12 @@ app.get("/admin/add", (req, res) => {
     // res.sendFile(__dirname + "/public/screens/register.html");
 });
 
-app.post("/admin/add",  (req, res) => {
+app.post("/admin/add", isAdmin , (req, res) => {
     // console.log(req);
     let bookname = req.body.bookname;
     let Author = req.body.Author;
     let Copies = req.body.Copies;
-    console.log(bookname + ' \\ ' + Author + ' // '+ Copies);
+    // console.log(bookname + ' \\ ' + Author + ' // '+ Copies);
 
     db.query(
         `SELECT * FROM books_record WHERE bookName = ${db.escape(bookname)}`,
@@ -240,7 +266,7 @@ app.post("/admin/add",  (req, res) => {
                 );
             }
             else{
-                console.log("hehhehhheh");
+                // console.log("hehhehhheh");
                 let FinalCopies = parseInt(Copies)+ parseInt(result[0].copies)
                 db.query(
                 `UPDATE books_record SET copies = ${db.escape(FinalCopies)} WHERE bookName = ${db.escape(bookname)}`
@@ -250,6 +276,40 @@ app.post("/admin/add",  (req, res) => {
    
     res.redirect("/admin");
 });
+
+
+app.get("/admin/choose/", (req, res) => {
+     res.render("views/choose");}
+);
+
+app.post("/admin/choose/accept", validateCookies, (req, res) => {
+    // console.log("inside choose accept ====================");
+    let reqId = req.body.reqId;
+    db.query(
+        `SELECT * FROM adminReq WHERE reqId = ${db.escape(reqId)}`,
+        (err,result)=>{
+            userId = result[0].userId;
+        
+    db.query(
+        `UPDATE users SET admin = 1 WHERE id = ${db.escape(userId)}`
+    );
+    db.query(
+        `DELETE FROM adminReq WHERE reqId = ${db.escape(reqId)};`
+    );
+});
+    res.redirect("/admin");
+});
+
+app.post("/admin/choose/deny", validateCookies, (req, res) => {
+    
+    // console.log("inside choose deny ====================");
+    let reqId = req.body.reqId;
+    db.query(
+        `DELETE FROM adminReq WHERE reqId = ${db.escape(reqId)};`
+    );
+    res.redirect("/admin");
+});
+
 
 app.get("/admin/remove/", (req, res) => {
 
@@ -263,7 +323,7 @@ app.get("/admin/remove/", (req, res) => {
     // res.sendFile(__dirname + "/public/screens/register.html");
 );
 
-app.post("/admin/remove",  (req, res) => {
+app.post("/admin/remove", validateCookies, (req, res) => {
     // console.log(req);
     let bookId = req.body.bookId;
     let copies = req.body.Copies;
@@ -282,14 +342,12 @@ app.get("/checkout/" ,(req, res) => {
 });
 app.post("/checkout", validateCookies ,  (req, res) => {
     // console.log(req);
-    let reqId = req.body.reqId;
-    db.query(
-        `SELECT * FROM requests WHERE reqId = ${db.escape(reqId)}`,
-            (err,row)=>{ var bookID = row[0].bookId ;
+    let bookId = req.body.bookId;
+    
     let userId = req.userID;
     db.query(
-        `INSERT INTO requests (bookId, userId , status) VALUES(${db.escape(bookID)},${db.escape(userId)} , -1 );`
-    );});
+        `INSERT INTO requests (bookId, userId , status) VALUES(${db.escape(bookId)},${db.escape(userId)} , -1 );`
+    );
     res.redirect("/");
 
 });
@@ -413,6 +471,7 @@ app.get("/client", validateCookies, (req, res) => {
 
     let books = [];
     let reqBook =[];
+    let userId = req.userID;
     db.query(
         `SELECT bookId, bookName, author, copies FROM books_record`,
         (err, result, field) => {
@@ -443,16 +502,18 @@ app.get("/client", validateCookies, (req, res) => {
         (err , result )=>{
             if(err){throw err}
             else{
-                if (result == "") {
-                    console.log("result is empty");
-                    reqBook = [{ reqId: 'empty', date: 'empty', bookId: 'empty', userId: 'empty' , status: "none" }];
-                }
-                else { reqBook = [] }
+                
+                 reqBook = [] 
                 result.forEach((book) => {
                     //console.log(book.BOOKID);
                     //   console.log("no");
+                    if(book.userId == userId){
                     reqBook.push({ reqId: book.reqId, date: book.date, bookId: book.bookId, userId: book.userId , status : book.status });
-                });
+                }});
+                if (reqBook == "") {
+                    console.log("reqBook is empty");
+                    reqBook = [{ reqId: 'empty', date: 'empty', bookId: 'empty', userId: 'empty' , status: "none" }];
+                }
                 res.render("views/client", { username: req.userName , data: books , reqdata: reqBook })
             }
         },
