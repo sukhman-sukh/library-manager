@@ -98,7 +98,7 @@ DROP TABLE IF EXISTS `requests`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `requests` (
   `reqId` int NOT NULL AUTO_INCREMENT,
-  `date` date DEFAULT NULL,
+  
   `bookId` int NOT NULL,
   `userId` int NOT NULL,
   `status` int NOT NULL DEFAULT '0',

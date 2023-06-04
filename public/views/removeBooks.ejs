@@ -4,11 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remove Books</title>
+
+<link rel="stylesheet" href="../style/removeBooks.css">
+    <title>Add Books</title>
 </head>
 <body>
-    <h1>Remove Book</h1>
-
-
+    <h1 class="heading">Remove Book</h1>
+ 
+    <form action="/admin/remove" method="POST">
+        <label class="label"  for="bookId" id="bookId"  > Book Id :-</label><br>
+        <input type="number"  class="inputField" id="bookId" name="bookId" required autofocus> <br> <br> 
+        <label class="label" for="Copies">No. of Books To Keep  :</label><br>
+        <input type="number" class="inputField" id="Copies" name="Copies" required autofocus> <br> <br> 
+        
+        <input type="submit" value="Save " id="submit">
+          
+    </form>
 </body>
+
+<!-- <script src="../script/ad"></script> -->
 </html>

@@ -211,6 +211,13 @@ app.get("/register", (req, res) => {
     // res.sendFile(__dirname + "/public/screens/register.html");
 });
 
+app.get("/admin/checkin", (req, res) => {
+
+    res.render("views/checkin");
+    // res.sendFile(__dirname + "/public/screens/register.html");
+});
+
+
 app.get("/admin/add", (req, res) => {
     console.log("inside add")
     res.render("views/addBooks", { data: "Incorrect ID or Password" });
@@ -225,15 +232,152 @@ app.post("/admin/add",  (req, res) => {
     console.log(bookname + ' \\ ' + Author + ' // '+ Copies);
 
     db.query(
-        `INSERT INTO books_record (bookName, author, copies) VALUES(${db.escape(bookname)},${db.escape(Author)} ,${db.escape(Copies)} );`
+        `SELECT * FROM books_record WHERE bookName = ${db.escape(bookname)}`,
+        (err,result)=>{
+            if(result[0] == undefined){
+                db.query(
+                    `INSERT INTO books_record (bookName, author, copies) VALUES(${db.escape(bookname)},${db.escape(Author)} ,${db.escape(Copies)} );`
+                );
+            }
+            else{
+                console.log("hehhehhheh");
+                let FinalCopies = parseInt(Copies)+ parseInt(result[0].copies)
+                db.query(
+                `UPDATE books_record SET copies = ${db.escape(FinalCopies)} WHERE bookName = ${db.escape(bookname)}`
+    );}
+        }
+    )
+   
+    res.redirect("/admin");
+});
+
+app.get("/admin/remove/", (req, res) => {
+
+   
+    // console.log("inside remove")
+    // data = [{bookId: bookId ,  copies: copies}]
+    
+    // console.log(data)
+    
+    res.render("views/removeBooks");}
+    // res.sendFile(__dirname + "/public/screens/register.html");
+);
+
+app.post("/admin/remove",  (req, res) => {
+    // console.log(req);
+    let bookId = req.body.bookId;
+    let copies = req.body.Copies;
+    console.log(bookId + ' '+ copies);
+    db.query(
+        `UPDATE books_record SET copies = ${db.escape(copies)} WHERE bookId = ${db.escape(bookId)}`,
     );
     res.redirect("/admin");
 });
 
-app.get("/admin/remove", (req, res) => {
-    console.log("inside add")
-    res.render("views/removeBooks", { data: "Incorrect ID or Password" });
+app.get("/checkout/" ,(req, res) => {
+
+    res.render("views/reqCheckout");
+    
     // res.sendFile(__dirname + "/public/screens/register.html");
+});
+app.post("/checkout", validateCookies ,  (req, res) => {
+    // console.log(req);
+    let reqId = req.body.reqId;
+    db.query(
+        `SELECT * FROM requests WHERE reqId = ${db.escape(reqId)}`,
+            (err,row)=>{ var bookID = row[0].bookId ;
+    let userId = req.userID;
+    db.query(
+        `INSERT INTO requests (bookId, userId , status) VALUES(${db.escape(bookID)},${db.escape(userId)} , -1 );`
+    );});
+    res.redirect("/");
+
+});
+
+
+app.get("/checkin/" ,(req, res) => {
+
+    res.render("views/reqcheckin");
+    
+    // res.sendFile(__dirname + "/public/screens/register.html");
+});
+
+app.post("/checkin",validateCookies,  (req, res) => {
+    // console.log(req);
+    let reqId = req.body.reqId;
+    db.query(
+        `SELECT * FROM requests WHERE reqId = ${db.escape(reqId)}`,
+            (err,row)=>{ var bookID = row[0].bookId ;
+    let userId = req.userID;
+    db.query(
+        `UPDATE requests SET status = 1 WHERE bookId = ${db.escape(bookID)}`
+    );});
+    res.redirect("/");
+});
+
+app.get("/admin/checkout/" ,(req, res) => {
+
+    res.render("views/checkout");
+    
+    // res.sendFile(__dirname + "/public/screens/register.html");
+});
+app.post("/admin/checkout",  (req, res) => {
+    // console.log(req);
+    let reqId = req.body.reqId;
+    
+    
+    db.query(
+        `SELECT * FROM requests WHERE reqId = ${db.escape(reqId)}`,
+            (err,row)=>{ var bookID = row[0].bookId ;
+                db.query(
+        `UPDATE requests SET status = 0 WHERE reqId = ${db.escape(reqId)}`
+                ),
+        db.query(
+            `SELECT * FROM books_record WHERE bookId = ${db.escape(bookID)}`,
+            (err,result)=>{
+               
+                    
+                    let FinalCopies = parseInt(result[0].copies)-1;
+                    db.query(
+                    `UPDATE books_record SET copies = ${db.escape(FinalCopies)} WHERE bookId = ${db.escape(bookID)}`
+        );
+            }
+        )
+    }, );
+    res.redirect("/");
+
+});
+
+app.get("/admin/checkin/" ,(req, res) => {
+
+    res.render("views/checkin");
+    
+    // res.sendFile(__dirname + "/public/screens/register.html");
+});
+app.post("/admin/checkin",  (req, res) => {
+    // console.log(req);
+    let reqId = req.body.reqId;
+   let bookID;
+    db.query(
+        `SELECT * FROM requests WHERE reqId = ${db.escape(reqId)}`,
+            (err,row)=>{  bookID = row[0].bookId ;
+                db.query(        
+        `DELETE FROM requests WHERE reqId = ${db.escape(reqId)} `
+                ),
+        db.query(
+            `SELECT * FROM books_record WHERE bookId = ${db.escape(bookID)}`,
+            (err,result)=>{
+               
+                    
+                    let FinalCopies = parseInt(result[0].copies)+1;
+                    db.query(
+                    `UPDATE books_record SET copies = ${db.escape(FinalCopies)} WHERE bookId = ${db.escape(bookID)}`
+        );
+            }
+        )
+    },);
+    res.redirect("/");
+
 });
 
 // data = [
@@ -260,8 +404,9 @@ app.get("/admin/remove", (req, res) => {
 // ];
 
 // bookStatus{
-//     0 : "Requested Check-In"
-//     1: "Check-In"
+//     1 : "Requested Check-In"
+//     0: "Check-out"
+//      -1: Requested- check-out
 // }
 
 app.get("/client", validateCookies, (req, res) => {
@@ -360,7 +505,8 @@ app.get("/client", validateCookies, (req, res) => {
                 result.forEach((book) => {
                     //console.log(book.BOOKID);
                     //   console.log("no");
-                    reqBook.push({ reqId: book.reqId, date: book.date, bookId: book.bookId, userId: book.userId , status : book.status });
+                    if(book.status == 0){var Status="Requested Check-In"} else{var Status="Check-In"}
+                    reqBook.push({ reqId: book.reqId, date: book.date, bookId: book.bookId, userId: book.userId , status : Status });
                 });
                 res.render("views/client", { username: req.userName , data: books , reqdata: reqBook })
             }
@@ -373,10 +519,10 @@ app.get("/client", validateCookies, (req, res) => {
 });
 
 // bookStatus{
-//     0 : "Requested Check-In"
-//     1: "Check-In"
+//     1 : "Requested Check-In"
+//     0: "Check-out"
+//      -1: Requested- check-out
 // }
-
 
 app.get("/admin", (req, res) => {
 
@@ -421,6 +567,7 @@ app.get("/admin", (req, res) => {
                 result.forEach((book) => {
                     //console.log(book.BOOKID);
                     //   console.log("no");
+                    // if(book.status == 0){var Status="Requested Check-In"} else{var Status="Check-In"}
                     reqBook.push({ reqId: book.reqId, date: book.date, bookId: book.bookId, userId: book.userId , status : book.status });
                 });
                 // res.render("views/admin", { username: req.userName , data: books , reqdata: reqBook })

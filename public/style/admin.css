@@ -78,3 +78,25 @@ body{
     position: relative;
     margin-left: 33%;
   }
+
+  #reqcheckout{
+    position: absolute;
+    margin-left: 45%;
+    margin-top: 12%;
+  }
+  #remove{
+    position: absolute;
+    margin-left: 45%;
+    margin-top: 15%;
+  }
+
+  #checkout{
+    position: absolute;
+    margin-top: 35%;
+    margin-left: 45%;
+  }
+  #checkin{
+    position: absolute;
+    margin-top: 30%;
+    margin-left: 45%;
+  }

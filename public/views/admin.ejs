@@ -5,17 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/admin.css" type="text/css">
-    <title>Document</title>
+    <title>Admin</title>
 </head>
 <body>
     <h1>Hello ! <%= username %></h1>
     <h2>List of books</h2>
-    <form>
+    <!-- <form>
         <input type="text" id="searchBox" name="searchBox"  autofocus><br><br>
     </form>
-    <button id = "searchbtn" >Search</button>
+    <button id = "searchbtn" >Search</button> -->
     <button id = "add" style="background-color: limegreen; " onclick="window.location.href = '/admin/add';">Add +</button>
-
+    <button class="statusbtn" id="reqcheckout" onclick="checkOut()" style="background-color: limegreen;"  > Check-Out </button>
+    <button class="statusbtn" id="remove" onclick="removeBook()" style="background-color: rgb(252, 133, 133);"  > Remove </button>
     <div class="list_container container1">
         
         
@@ -24,32 +25,37 @@
             <thead>
                 <tr>
                     <th > "Book Id  "        </th> 
-                    <th></th> <th></th>
+                    <th></th> <th>||</th>
                     <th > "Book Name  "      </th> 
-                    <th></th><th></th>
+                    <th></th><th>||</th>
                     <th > "Author  "  </th>
-                    <th></th><th></th>  
+                    <th></th><th>||</th>  
                     <th > "Copies  " </th>
                 </tr>
             </thead>
 
             <tbody >
-                <% data.forEach(function(entry) { %>
+                <% let i=0; data.forEach(function(entry) { %>
                     <% if(entry.copies != 0) { %>
                   <tr>
                     <td>  <%= entry.bookId %></td>
                     <td></td>
-                    <td></td>
+                    <td>||</td>
                     <td><%= entry.bookName %></td>
                     <td></td>
-                    <td></td>
+                    <td>||</td>
                     <td><%= entry.author %></td>
                     <td></td>
-                    <td></td>
+                    <td>||</td>
                     <td><%= entry.copies %></td>
-                    <td><button class="statusbtn" id="checkOut" style="background-color: limegreen;" > Check-Out </button></td>
+                    <td><form id="bookIdForm" style="display: none;">
+                        <input type="text" class="inputField" style="display: none;" id="bookId" name="bookId" value= <%= entry.bookId %> required autofocus><br><br>
+                        <input type="text" class="inputField" id="copies" name="copies"style="display: none;" value= <%= entry.copies %> required autofocus><br><br>
+                            
+                    </form></td>
+                    <td></td>
 
-                    <td><button class="statusbtn" id="remove" style="background-color: rgb(252, 133, 133);" onclick="window.location.href = '/admin/remove';" > Remove </button></td>
+                    <td></td>
                     <% } %>
                 </tr>
                 
@@ -67,11 +73,10 @@
             <thead>
                 <tr>
                     <th > "Request Id  "        </th> 
-                    <th></th> <th></th>
-                    <th > "Date  "      </th> 
-                    <th></th><th></th>
+                    
+                    <th></th><th>||</th>
                     <th > "Book Id  "  </th>
-                    <th></th><th></th>
+                    <th></th><th>||</th>
                     <th > "User Id  "  </th>
                     <th></th>
                 </tr>
@@ -82,18 +87,16 @@
                     
                   <tr>
                     <td>  <%= reqEntry.reqId %></td>
+                    
                     <td></td>
-                    <td></td>
-                    <td><%= reqEntry.date %></td>
-                    <td></td>
-                    <td></td>
+                    <td>||</td>
                     <td><%= reqEntry.bookId %></td>
                     <td></td>
-                    <td></td>
+                    <td>||</td>
                     <td><%= reqEntry.userId %></td>
                     <td></td>
 
-                    <td><button class="statusbtn" id="reqbtn" <% if(reqEntry.status == "Request Check-In") { %>style="background-color: white;"<% } %> <% if(reqEntry.status == "Check-In") { %> style="background-color:rgb(255, 53, 53)"<% } %>     > <%= reqEntry.status %> </button></td>
+                    <td><button class="statusbtn"  id="reqbtn" <% var Status="" ; var link=""; if(reqEntry.status == 1 ) {  %>style="background-color: white; " <% Status = "Requested Check-In"; } %> <%  if(reqEntry.status == -1 ) {  %>style="background-color: white; " <% Status = "Requested Check-Out"; } %> <% if(reqEntry.status == 0 ) { link ="/checkin"%> <%  Status ="Request Checkin";} %>  onclick="window.location.href = `<%= link %>`;"   > <%= Status%> </button></td>
                     
                 </tr>
                 
@@ -110,7 +113,7 @@
             <thead>
                 <tr>
                     <th > "Request Id  "        </th> 
-                    <th></th> <th></th>
+                    <th></th> <th>||</th>
                     
                     <th > "User Id  "  </th>
                     <th></th>
@@ -123,7 +126,7 @@
                   <tr>
                     <td><%= reqst.reqId %></td>
                     <td></td>
-                    <td></td>
+                    <td>||</td>
                    
                     <td><%= reqst.userId %></td>
                     <td></td>
@@ -138,7 +141,11 @@
         </table>
 
     </div>
+
+    <button class="statusbtn" id="checkout"  onclick="window.location.href =' /admin/checkout ' ;" style="background-color: limegreen;"  > Check-Out </button>
+    <button class="statusbtn" id="checkin"  onclick="window.location.href = ' /admin/checkin ';" style="background-color: limegreen;"  > Check-in </button>
     <button id="logout" onclick="window.location.href = '/logout';"> Log-Out</button>
 </body>
-<script src="../script/admin.js"></script>
+
+    <script src="../script/admin.js"></script>
 </html>
