@@ -14,7 +14,7 @@
         <input type="text" id="searchBox" name="searchBox"  autofocus><br><br>
     </form>
     <button id = "searchbtn" >Search</button> -->
-    <button class="statusbtn" id="reqcheckout" onclick="checkOut()" style="background-color: limegreen;"  > Check-Out </button>
+    <button class="statusbtn" id="reqcheckout" onclick="window.location.href = `/checkout`;" style="background-color: limegreen;"  > Check-Out </button>
     
     <div class="list_container container1">
         
@@ -95,7 +95,7 @@
         </table>
 
     </div>
-    <button id="logout"> Log-Out</button>
+    <button id="logout" onclick="window.location.href = '/logout';"> Log-Out</button>
 </body>
 <script src="../script/client.js"></script>
 </html>

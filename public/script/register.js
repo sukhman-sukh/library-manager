@@ -32,19 +32,13 @@ function check(){
         mismatch.style.display = 'none'
         invalid.style.display = 'none'
         btnsubmit.style.cursor = 'default'
-        // btnsubmit.disabled = false;
         i=0;
     }
 }
 
 btnsubmit.addEventListener("click", (e) => {
-    // e.preventDefault();
-    console.log(i)
-    // if(btnsubmit.style.cursor == 'default')
+   
     if(i===0){
-        // invalid.style.display = 'block'
-        console.log("sending request to servre")
         registerForm.submit()
-        console.log("=========")
-}
+   }
 });

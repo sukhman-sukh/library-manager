@@ -10,12 +10,8 @@
 <body>
     <h1>Hello ! <%= username %></h1>
     <h2>List of books</h2>
-    <!-- <form>
-        <input type="text" id="searchBox" name="searchBox"  autofocus><br><br>
-    </form>
-    <button id = "searchbtn" >Search</button> -->
     <button id = "add" style="background-color: limegreen; " onclick="window.location.href = '/admin/add';">Add +</button>
-    <button class="statusbtn" id="reqcheckout" onclick="checkOut()" style="background-color: limegreen;"  > Check-Out </button>
+    <button class="statusbtn" id="reqcheckout" onclick="window.location.href = `/checkout`;" style="background-color: limegreen;"  > Check-Out </button>
     <button class="statusbtn" id="remove" onclick="removeBook()" style="background-color: rgb(252, 133, 133);"  > Remove </button>
     <div class="list_container container1">
         
@@ -131,7 +127,6 @@
                     <td><%= reqst.userId %></td>
                     <td></td>
                     
-                    <!-- <td><button class="statusbtn" id="accept"  style="background-color: limegreen;"     > Accept/Deny  </button></td> -->
                     <td><button class="statusbtn" id="choose" onclick="window.location.href =' /admin/choose ' ;" style="background-color: rgb(252, 133, 133);"     > Accept / Deny  </button></td>
                     
                 </tr>
