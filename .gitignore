@@ -1,4 +1,4 @@
 .env
-.server.cert
-.server.key
-./node_modules
+server.cert
+server.key
+node_modules
